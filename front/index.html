@@ -66,7 +66,7 @@
   </div>
 
   <script>
-    const eventSource = new EventSource('https://sse-realtime-dolar.vercel.app/cotation');
+    const eventSource = new EventSource('/cotation');
     const cotacaoEl = document.getElementById('cotacao');
 
     eventSource.onmessage = function(event) {
@@ -75,8 +75,6 @@
     };
 
     eventSource.onerror = function() {
-    cotacaoEl.textContent = 'Erro ao carregar a cotação';
-    lastUpdatedEl.textContent = '';
 
     eventSource.close(); 
 
