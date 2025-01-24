@@ -6,6 +6,7 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config()
 
+app.use(express.static('front'));
 
 app.use(cors())
 app.use(express.json())
