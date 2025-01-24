@@ -6,7 +6,7 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config()
 
-app.use(express.static(path.join(__dirname, '../../front')));
+app.use(express.static('./'));
 
 app.use(cors())
 app.use(express.json())
