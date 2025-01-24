@@ -2,11 +2,24 @@ const express = require('express')
 const app = express()
 const axios = require('axios')
 const cors = require('cors')
+const fs = require('fs')
+const path = require('path')
 require('dotenv').config()
 
 
 app.use(cors())
 app.use(express.json())
+
+app.get('/', (_, res) => {
+    res.writeHead(200, {
+      'content-language': 'text/html',
+    });
+  
+    const pathIndex = path.join(__dirname, '../',  '../', 'front/', 'index.html' );
+    const streamIndexHtml = fs.createReadStream(pathIndex);
+    streamIndexHtml.pipe(res);
+  });
+
 app.get('/cotation', async (req, res) => {
 
     res.setHeader("Content-Type", "text/event-stream");
