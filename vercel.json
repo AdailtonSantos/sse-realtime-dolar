@@ -10,6 +10,7 @@
         {
             "src": "(.*)",
             "dest": "services/api/index.js"
-        }
+        },
+        { "src": "/favicon.ico", "dest": "/front/favicon.ico" }
     ]
 }
