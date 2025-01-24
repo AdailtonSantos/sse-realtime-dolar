@@ -66,7 +66,7 @@
   </div>
 
   <script>
-    const eventSource = new EventSource('http://localhost:8081/cotation');
+    const eventSource = new EventSource('https://sse-realtime-dolar.vercel.app/cotation');
     const cotacaoEl = document.getElementById('cotacao');
 
     eventSource.onmessage = function(event) {
