@@ -71,7 +71,7 @@
 
     eventSource.onmessage = function(event) {
       const data = JSON.parse(event.data);
-      cotacaoEl.textContent = `R$ ${data.high}`;
+      cotacaoEl.textContent = `R$ ${data.bid}`;
     };
 
     eventSource.onerror = function() {
