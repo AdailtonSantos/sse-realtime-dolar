@@ -4,6 +4,7 @@ const axios = require('axios')
 const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
+const { clear } = require('console')
 require('dotenv').config()
 
 app.use(express.static(path.join(__dirname, '../../front')));
@@ -13,34 +14,44 @@ app.use(express.json())
 
 app.get('/', (_, res) => {
     res.writeHead(200, {
-      'content-language': 'text/html',
+        'content-language': 'text/html',
     });
-  
-    const pathIndex = path.join(__dirname, '../',  '../', 'front/', 'index.html' );
+
+    const pathIndex = path.join(__dirname, '../', '../', 'front/', 'index.html');
     const streamIndexHtml = fs.createReadStream(pathIndex);
     streamIndexHtml.pipe(res);
-  });
+});
+
+const intervals = new Map()
 
 app.get('/cotation', async (req, res) => {
 
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
-    console.log('teste')
+
     const cotation = await getCotation()
     res.write(`data: ${JSON.stringify(cotation)}\n\n`)
 
-    setInterval(async () => {
+    const clientInterval = setInterval(async () => {
         const cotation = await getCotation()
         res.write(`data: ${JSON.stringify(cotation)}\n\n`)
     }, 90000)
+
+    intervals.set(req.ip, clientInterval)
+
+    req.on('close', () => {
+        clearInterval(intervals.get(req.ip))
+        intervals.delete(req.ip)
+    })
+
 })
 
 async function getCotation() {
     try {
         const cotation = await axios.get(`https://economia.awesomeapi.com.br/USD?token=${process.env.API_COTATION_TOKEN}`)
         return cotation.data[0]
-    } catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
