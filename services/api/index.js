@@ -26,7 +26,7 @@ app.get('/cotation', async (req, res) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
-
+    console.log('teste')
     const cotation = await getCotation()
     res.write(`data: ${JSON.stringify(cotation)}\n\n`)
 
