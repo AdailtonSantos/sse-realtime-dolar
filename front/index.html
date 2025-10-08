@@ -1,87 +1,103 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9138450718384751"
-     crossorigin="anonymous"></script>
-  <title>Dólar em tempo real</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: #f0f4f8;
-    }
-
-    .container {
-      text-align: center;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .container h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #333;
-    }
-
-    .cotacao {
-      font-size: 48px;
-      color: #4caf50;
-      margin: 20px 0;
-    }
-
-    .last-updated {
-      font-size: 14px;
-      color: #777;
-    }
-
-    .info-message {
-      font-size: 12px;
-      color: #888;
-      margin-top: 20px;
-      background: #e7f3e7;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #d0f0d0;
-    }
-  </style>
+    crossorigin="anonymous"></script>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <title>Cotação do Dólar - Tempo Real</title>
+  <meta name="description"
+    content="Acompanhe a cotação do dólar em tempo real com informações detalhadas de variação, máxima e mínima do dia. Dados da AwesomeAPI.">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <div class="container">
-    <h1>Dólar em tempo real</h1>
-    <div class="cotacao" id="cotacao">Carregando...</div>
-    <div class="last-updated" id="lastUpdated"></div>
-    <div class="info-message">
-        Sistema feito utilizando SSE. Não é necessário atualizar a página para obter a cotação atualizada.
+  <header class="header">
+    <div class="header-container">
+      <div class="header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
       </div>
-  </div>
+      <div>
+        <h1 class="header-title">Cotação do Dólar</h1>
+        <p class="header-subtitle">Acompanhe em tempo real</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div id="content">
+      <!-- Main Currency Card -->
+      <div class="card main-card">
+        <div class="main-card-content">
+          <div class="main-info">
+            <div class="badges">
+              <span class="badge badge-outline">USD/BRL</span>
+            </div>
+            <h2 id="cotacao" class="main-value">Carregando...</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="card info-banner">
+        <div class="banner-content">
+          <div>
+            <h3 class="banner-title">Atualização Automática</h3>
+            <p class="banner-text">Os valores são atualizados automaticamente a cada 1 minuto</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <p class="footer-author">
+          Desenvolvido por <span class="footer-author-name"><a href="https://devadailtonsantos.vercel.app"
+              target="_blank" rel="noreferrer noopener">Adailton Santos</a></span>
+        </p>
+      </div>
+      <div class="footer-api">
+        <span>Dados fornecidos por</span>
+        <a href="https://docs.awesomeapi.com.br/api-de-moedas" target="_blank" rel="noopener noreferrer"
+          class="footer-link">
+          AwesomeAPI
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const eventSource = new EventSource('/cotation');
     const cotacaoEl = document.getElementById('cotacao');
 
-    eventSource.onmessage = function(event) {
+    eventSource.onmessage = function (event) {
       const data = JSON.parse(event.data);
       cotacaoEl.textContent = `R$ ${data.bid}`;
+      document.title = `Dólar: R$ ${data.bid}`;
     };
 
-    eventSource.onerror = function() {
+    eventSource.onerror = function () {
 
-    eventSource.close(); 
+      eventSource.close();
 
-    setTimeout(() => {
-      initializeEventSource(); 
-    }, 1000); 
-  };
+      setTimeout(() => {
+        initializeEventSource();
+      }, 1000);
+    };
 
   </script>
 </body>
